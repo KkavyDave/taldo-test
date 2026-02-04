@@ -1,6 +1,8 @@
 import UpcomingWebinars from "@/components/webinar/UpcomingWebinars";
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = "force-dynamic";
+
 async function getWebinars() {
     try {
         // Updated to use 'liveWebinar' table
