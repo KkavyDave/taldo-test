@@ -1,11 +1,16 @@
+import Link from "next/link"; 
 import { TaldoLogo, GermanyFlag } from "./Icons";
 
 export const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-[50] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 md:h-24 flex items-center justify-between relative">
+        
+        {/* 2. LOGO WITH LINK */}
         <div className="flex-shrink-0 z-20"> 
-          <TaldoLogo className="h-8 md:h-10 w-auto" />
+          <Link href="/" className="cursor-pointer block transition-opacity hover:opacity-80" aria-label="Back to Home">
+            <TaldoLogo className="h-8 md:h-10 w-auto" />
+          </Link>
         </div>
         
         {/* DESKTOP TITLE */}
