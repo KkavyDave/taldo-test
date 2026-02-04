@@ -8,7 +8,7 @@ import Webinar from "@/app/webinar/page"; // <-- Remove this import, it causes n
 import Testimonials from "@/components/Testimonials";
 import UpcomingWebinars from "@/components/webinar/UpcomingWebinars";
 import { prisma } from '@/lib/prisma';
-// import FinalCTA from "@/components/home/FinalCTA";
+import FinalCTA from "@/components/home/FinalCTA";
 
 // Fetch directly from DB
 async function getUpcomingWebinars() {
@@ -38,7 +38,7 @@ export default async function Home() {
       <Testimonials />
       <UpcomingWebinars webinars={webinars} />
       <FAQ />
-      
+      <FinalCTA />
     </main>
   );
 }

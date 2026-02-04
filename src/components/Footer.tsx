@@ -1,45 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEnquiryModal } from "@/context/EnquiryModalContext";
+import { ArrowRight } from "lucide-react";
 
-const footerColumns = [
-  {
-    sections: [
-      {
-        title: "NAVIGATION",
-        links: [
-          { name: "Home", href: "/" },
-          { name: "About Us", href: "/about" },
-          { name: "Recruiters", href: "/recruiters" },
-          { name: "Nurses to Germany", href: "/nurses-to-germany" },
-        ],
-      },
-    ],
-  },
-  {
-    sections: [
-      {
-        title: "RESOURCES",
-        links: [
-          { name: "Blog", href: "/blog" },
-          { name: "Webinar", href: "/webinar" },
-        ],
-      },
-    ],
-  },
-  {
-    sections: [
-      {
-        title: "GET IN TOUCH",
-        links: [
-          { name: "contact@taldo.co", href: "mailto:contact@taldo.co" },
-          { name: "+91 9818956623", href: "tel:+919818956623" },
-          { name: "1102, Tower A, Goregaon One Aspect, Goregaon West, Mumbai - 400104", href: "https://maps.google.com/?q=1102,_Tower_A,_Goregaon_One_Aspect,_Goregaon_West,_Mumbai_400104" },
-        ],
-      },
-    ],
-  },
-];
-
+// Social Links Data
 const socialLinks = [
   {
     name: "Facebook",
@@ -65,16 +32,7 @@ const socialLinks = [
     name: "YouTube",
     href: "https://www.youtube.com/@TaldoCareers",
     icon: (
-      <svg
-        className="w-5 h-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="1" y="5" width="22" height="14" rx="3" ry="3" />
         <polygon points="10,16 16,12 10,8" fill="currentColor" stroke="none" />
       </svg>
@@ -94,34 +52,41 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { openModal } = useEnquiryModal();
+  const pathname = usePathname();
+  
+  // Logic: Show CTA only on non-home pages
+  const showFooterCTA = pathname !== "/"; 
+
   return (
-    <footer className="w-full bg-[#E8ECF7] rounded-2xl">
-      {/* Main Footer Content */}
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-20 pt-12 md:pt-16 lg:pt-20 pb-6 md:pb-8">
-        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-12">
-          {/* Logo */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-            <div className="shrink-0 lg:w-1/5">
-              <Link href="/">
-                <Image
-                  src="/Taldo_Horizontal Logo 1.svg"
-                  alt="Taldo"
-                  width={104}
-                  height={38}
-                  className="h-8 w-auto md:h-10"
-                />
-              </Link>
-            </div>
-            <p className="mt-5"> Taldo is a transparent and ethical career accelerator for professionals pursuing global careers</p>
-            {/* Social Links */}
-            <div className="flex items-center gap-6 md:gap-10 mt-5">
+    <footer className="w-full bg-[#E8ECF7]">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 pt-16 pb-8">
+        
+        {/* GRID LAYOUT */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${showFooterCTA ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-8`}>
+          
+          {/* Column 1: Brand */}
+          <div className="flex flex-col items-start pt-6">
+            <Link href="/" className="mb-6">
+              <Image
+                src="/Taldo_Horizontal Logo 1.svg"
+                alt="Taldo"
+                width={120}
+                height={40}
+                className="h-10 w-auto"
+              />
+            </Link>
+            <p className="text-gray-600 text-sm leading-relaxed mb-6">
+              Taldo is a transparent and ethical career accelerator for professionals pursuing global careers.
+            </p>
+            <div className="flex items-center gap-6">
               {socialLinks.map((social) => (
                 <Link
                   key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-text transition-colors hover:text-primary"
+                  className="text-gray-500 transition-colors hover:text-[#5E72E4]"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -130,41 +95,76 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation Columns */}
-          {footerColumns.map((column, colIndex) => (
-            <div key={colIndex} className="flex flex-col gap-8 md:gap-12 lg:w-1/5 w-full items-center lg:items-start">
-              {column.sections.map((section) => (
-                <div key={section.title} className="flex flex-col items-center lg:items-start w-full">
-                  <h4 className="mb-3 md:mb-4 text-base md:text-lg font-semibold tracking-wide text-gray-900 text-center lg:text-left">
-                    {section.title}
-                  </h4>
-                  <ul className="flex flex-col gap-1.5 md:gap-2 items-center lg:items-start w-full">
-                    {section.links.map((link) => (
-                      <li key={link.name} className="w-full text-center lg:text-left">
-                        <Link
-                          href={link.href}
-                          className="text-xs md:text-sm text-gray-text transition-colors hover:text-primary"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+          {/* Column 2: Navigation */}
+          <div className="pt-6">
+            <h4 className="mb-6 text-sm font-bold tracking-wider text-gray-900 uppercase">
+              Navigation
+            </h4>
+            <ul className="space-y-4">
+              <li><Link href="/" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">Home</Link></li>
+              <li><Link href="/about" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">About Us</Link></li>
+              <li><Link href="/recruiters" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">Recruiters</Link></li>
+              <li><Link href="/nurses-to-germany" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">Nurses to Germany</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Resources */}
+          <div className="pt-6">
+            <h4 className="mb-6 text-sm font-bold tracking-wider text-gray-900 uppercase">
+              Resources
+            </h4>
+            <ul className="space-y-4">
+              <li><Link href="/blog" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">Blogs</Link></li>
+              <li><Link href="/webinar" className="text-gray-600 hover:text-[#5E72E4] transition-colors text-sm">Webinars</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 4: Contact */}
+          <div className="pt-6">
+            <h4 className="mb-6 text-sm font-bold tracking-wider text-gray-900 uppercase">
+              Get in Touch
+            </h4>
+            <ul className="space-y-4 text-sm text-gray-600">
+              <li>
+                <a href="mailto:contact@taldo.co" className="hover:text-[#5E72E4] transition-colors">contact@taldo.co</a>
+              </li>
+              <li>
+                <a href="tel:+919818956623" className="hover:text-[#5E72E4] transition-colors">+91 9818956623</a>
+              </li>
+              <li className="leading-relaxed">
+                1102, Tower A, Goregaon One Aspect,<br />
+                Goregaon West, Mumbai - 400104
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 5: CTA (Hidden on Home Page) */}
+          {showFooterCTA && (
+            <div className="flex flex-col items-start bg-white p-6 rounded-2xl shadow-sm border border-white/50 h-fit">
+                <h4 className="mb-3 text-lg font-bold text-[#2B3656]">
+                Start Your Journey
+                </h4>
+                <p className="mb-6 text-sm text-gray-500 leading-relaxed">
+                Ready to work in Germany? Get your free profile assessment today.
+                </p>
+                <button
+                onClick={openModal}
+                // Updated text and handled layout for longer button
+                className="w-full flex items-center justify-center gap-2 bg-[#5E72E4] hover:bg-[#4758b8] text-white py-3 px-4 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 text-sm text-center"
+                >
+                Book your FREE Consultation <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
             </div>
-          ))}
+          )}
+
         </div>
       </div>
 
-      {/* Full Width Divider */}
       <div className="w-full h-px bg-gray-200" />
 
-      {/* Bottom Section */}
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-20 py-6 md:py-8">
-        {/* Copyright */}
-        <p className="text-xs md:text-sm text-gray-text text-center">
-          ©2026 Taldo. All rights reserved
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-6">
+        <p className="text-xs md:text-sm text-gray-500 text-center md:text-left">
+          © 2026 Taldo. All rights reserved.
         </p>
       </div>
     </footer>

@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Contact from "@/components/Contact";
+// import Contact from "@/components/Contact"; // <--- Keep this commented or delete it
 
 export default function LayoutClient({
   children,
@@ -12,20 +12,20 @@ export default function LayoutClient({
 }) {
   const pathname = usePathname();
 
-  const isRecruiterPage = pathname.startsWith("/recruiters");
-  const isAdminPage = pathname.startsWith("/admin");
-  // 1. ADD THIS CHECK
-  const isCalculatorPage = pathname.startsWith("/calculator");
+  // Helper checks
+  const isAdminPage = pathname?.startsWith("/admin");
+  const isCalculatorPage = pathname?.startsWith("/calculator"); // Optional if you have specific logic for this later
 
   return (
     <>
+      {/* Hide Header on Admin pages */}
       {!isAdminPage && <Header />}
       
       {children}
       
-      {/* 2. UPDATE THIS CONDITION (Add !isCalculatorPage) */}
-      {!isRecruiterPage && !isAdminPage && !isCalculatorPage && <Contact />}
+  
       
+      {/* Hide Footer on Admin pages */}
       {!isAdminPage && <Footer />}
     </>
   );
