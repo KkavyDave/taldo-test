@@ -1,0 +1,99 @@
+/**
+ * Prisma Schema
+ * 
+ * Defines the database schema for the Taldo application.
+ * Uses PostgreSQL as the database provider.
+ * 
+ * @see https://pris.ly/d/prisma-schema
+ */
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Admin users with authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String   // Bcrypt hashed password
+  role      String   @default("admin") // For future role-based access
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([active])
+}
+
+/// Blog posts with rich content
+model Blog {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  date         String
+  image        String   @db.Text // Base64 data URL
+  intro        String   @db.Text
+  content      Json     @default("[]") // { type: 'paragraph' | 'list', value: string | string[] }[]
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published])
+}
+
+/// YouTube Shorts webinars
+model Webinar {
+  id          String   @id @default(cuid())
+  videoId     String   @unique
+  title       String?
+  description String?  @db.Text
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, order])
+}
+
+model LiveWebinar {
+  id          String   @id @default(cuid())
+  title       String
+  date        DateTime
+  image       String   @db.Text
+  link        String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, date])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  age       Int
+  state     String
+  experienceYears Int
+  qualification   String
+  lifestyle       String
+  projectedSavings String
+  createdAt DateTime @default(now())
+}
+
+model JobSeeker {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  state         String?
+  qualification String?  // Stores the "Education" field
+  createdAt     DateTime @default(now())
+}

@@ -1,0 +1,10 @@
+{
+  "video_ids": [
+    "eQ23qmDEa_Q",
+    "Gkykh0qXkxc",
+    "PDrFXZtNJMs",
+    "Vd_F6DkD-QU"
+  ],
+  "note": "To add more video IDs, extract them from https://www.youtube.com/channel/UC30kGBAio5wWREcoyJ8bYtQ/shorts using the browser console script in extract_shorts.js"
+}
+
